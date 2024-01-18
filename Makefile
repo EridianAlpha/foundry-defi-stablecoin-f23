@@ -54,7 +54,8 @@ holesky-network:
 install:
 	forge install foundry-rs/forge-std@v1.5.3 --no-commit && \
 	forge install Cyfrin/foundry-devops@0.0.11 --no-commit && \
-	forge install openzeppelin/openzeppelin-contracts@v5.0.0 --no-commit
+	forge install openzeppelin/openzeppelin-contracts@v5.0.0 --no-commit && \
+	forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
 
 deploy:
 	@forge script script/DeployDSC.s.sol:DeployDSC $(NETWORK_ARGS) -vvvv

@@ -4,7 +4,8 @@ out = "out"
 libs = ["lib"]
 remappings = [
     "@foundry-devops/=lib/foundry-devops/",
-    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/"
     ]
 
 # Allow foundry to run commands on the command line

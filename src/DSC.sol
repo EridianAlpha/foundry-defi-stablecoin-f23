@@ -1,56 +1,29 @@
 // SPDX-License-Identifier: MIT
-
-// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volitility coin
-
-// Layout of Contract:
-// version
-// imports
-// errors
-// interfaces, libraries, contracts
-// Type declarations
-// State variables
-// Events
-// Modifiers
-// Functions
-
-// Layout of Functions:
-// constructor
-// receive function (if exists)
-// fallback function (if exists)
-// external
-// public
-// internal
-// private
-// view & pure functions
-
 pragma solidity ^0.8.20;
 
 import {ERC20Burnable, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-/*
- * @title DSC
- * @author Eridian Alpha
- * Collateral: Exogenous
- * Minting (Stability Mechanism): Decentralized (Algorithmic)
- * Value (Relative Stability): Anchored (Pegged to USD)
- * Collateral Type: Crypto
+/**
+ *  @title DSC
+ *  @author EridianAlpha
+ *  @notice This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
+ *  Collateral: Exogenous
+ *  Minting (Stability Mechanism): Decentralized (Algorithmic)
+ *  Value (Relative Stability): Anchored (Pegged to USD)
+ *  Collateral Type: Crypto
  *
- * This is the contract meant to be owned by DSCEngine. It is a ERC20 token that can be minted and burned by the DSCEngine smart contract.
+ *  This is the contract meant to be owned by DSCEngine. It is a ERC20 token that can be minted and burned by the DSCEngine smart contract.
  */
-
 contract DSC is ERC20Burnable, Ownable {
     error DSC__MintAmountMustBeMoreThanZero();
     error DSC__MintNotZeroAddress();
     error DSC__BurnAmountMustBeMoreThanZero();
     error DSC__BurnAmountExceedsBalance();
 
-    constructor() ERC20("DSC", "DSC") Ownable(msg.sender) {}
+    constructor() ERC20("DSC", "DSC") Ownable() {}
 
-    function mint(
-        address _to,
-        uint256 _amount
-    ) external onlyOwner returns (bool) {
+    function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {
         if (_to == address(0)) {
             revert DSC__MintNotZeroAddress();
         }
@@ -61,7 +34,7 @@ contract DSC is ERC20Burnable, Ownable {
         return true;
     }
 
-    function burn(uint256 _amount) public override onlyOwner {
+    function burn(uint256 _amount) public override(ERC20Burnable) onlyOwner {
         uint256 balance = balanceOf(msg.sender);
         if (_amount <= 0) {
             revert DSC__BurnAmountMustBeMoreThanZero();
@@ -69,6 +42,6 @@ contract DSC is ERC20Burnable, Ownable {
         if (balance < _amount) {
             revert DSC__BurnAmountExceedsBalance();
         }
-        super.burn(_amount); // Use super to explicitly call ERC20Burnable.burn() in the inheritance hierarchy one level up
+        ERC20Burnable.burn(_amount);
     }
 }
